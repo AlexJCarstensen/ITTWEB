@@ -7,34 +7,44 @@ block content
 
   ul#clickableList 
 
-  table#workoutTable
-    
+  table#workoutTable= mytable
+    tr
+        th Exercise
+        th Description
+        th Sets
+        th Repetitions
+      
   p Make your own exercise program
+  
+    table#newWorkoutTable
+      tr
+        th Exercise
+        th Description
+        th Sets
+        th Repetitions
+      tr
+        th
+          input(type="text")
+        th
+          input(type="text")
+        th
+          input(type="text")
+        th
+          input(type="text")
 
-  table#newWorkoutTable
-    tr
-      th Exercise
-      th Description
-      th Sets
-      th Repetitions
-    tr
-      th
-        input(type="text")
-      th
-        input(type="text")
-      th
-        input(type="text")
-      th
-        input(type="text")
+    button#addRow(onclick="addRow()") Add exercise
 
-  button#addRow(onclick="addRow()") Add exercise
+  
+    button#clickme(type="submit") Tilføj
+
+  
     
-  form(action="add" method="post")  
-    button#clickme(type="submit" onclick="test()") Tilføj
+  
+  
 
   
   script(src="/javascripts/index.js")
-  script(src="/index.js")
+  
 
   
 

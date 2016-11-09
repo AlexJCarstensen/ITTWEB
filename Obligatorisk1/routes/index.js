@@ -11,14 +11,24 @@ var url = 'mongodb://localhost:27017/myproject';
 router.get('/', function(req, res, next) {
 
 
+MongoClient.connect(url, function(err, db) {
+  assert.equal(null, err);
+  console.log("Connected successfully to server");
 
-  res.render('index', { title: 'Workouts' });
+findDocuments(db, function(result){
+  res.render('index', { title: 'Workouts', mytable:  result });
+   
+   db.close();
+});
+});
+
 });
 
 /* Put new Workout in database */
 router.post('/add', function(req, res, next)
 {
-
+  console.log(req.body);
+console.log("POST");
 // Use connect method to connect to the server
 MongoClient.connect(url, function(err, db) {
   assert.equal(null, err);
@@ -27,7 +37,7 @@ MongoClient.connect(url, function(err, db) {
 //Inserting into documents
 insertDocuments(db, function(){
    db.close();
-}); 
+},req); 
 });
 
 
@@ -35,34 +45,26 @@ MongoClient.connect(url, function(err, db) {
   assert.equal(null, err);
   console.log("Connected successfully to server");
 
-findDocuments(db, function(){
+findDocuments(db, function(result){
+  res.render('index', { title: 'Workouts', mytable:  result });
    db.close();
 });
 });
 
 
 
- res.render('index', { title: 'Workouts' });
+ 
 
 });
 
 /* Insert function */ 
-var insertDocuments = function(db, callback){
+var insertDocuments = function(db, callback, req){
 
 console.log("Posting to database");
 
-//Getting table of exercises
- var table = res.document.getElementById("newWorkoutTable");
- var rows = table.rows.length;
 
-        for (var r = 0, rows; r < n; r++) {
-          var exercise = new Object();
-          exercise.name = table.rows[r].cell[0].innerHTML;
-          exercise.Description = table.rows[r].cell[1].innerHTML;
-          exercise.Sets = table.rows[r].cell[2].innerHTML;
-          exercise.Repetitions = table.rows[r].cell[3].innerHTML;
           
-          db.collection('Workouts').insertOne(exercise.toJSON(),  function(err, result)
+db.collection('Workouts').insertOne(req.body,  function(err, result)
 {
   assert.equal(err, null);
   console.log("Inserted the following records");
@@ -70,7 +72,7 @@ console.log("Posting to database");
 });
 
 
-        }
+      //  }
 
 
 
@@ -91,8 +93,7 @@ if(docs != null)
 }
 else
 {
-  console.log("No documents in database");
-  callback();
+  callback(docs);
 }
 });
 }
