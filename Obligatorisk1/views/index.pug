@@ -7,12 +7,19 @@ block content
 
   ul#clickableList 
 
-  table#workoutTable= mytable
+  table#workoutTable
     tr
         th Exercise
         th Description
         th Sets
         th Repetitions
+    each workout in mytable
+      each exercise in workout.exercises
+        tr
+          td= exercise.name
+          td= exercise.Description
+          td= exercise.Sets
+          td= exercise.Repetitions
       
   p Make your own exercise program
   
@@ -23,13 +30,13 @@ block content
         th Sets
         th Repetitions
       tr
-        th
+        td
           input(type="text")
-        th
+        td
           input(type="text")
-        th
+        td
           input(type="text")
-        th
+        td
           input(type="text")
 
     button#addRow(onclick="addRow()") Add exercise

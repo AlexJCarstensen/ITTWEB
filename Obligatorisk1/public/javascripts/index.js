@@ -25,14 +25,26 @@ $(document).ready(function(){
          console.log("hej");
                      
           exercise.name = table.rows[r].cells[0].children[0].value;
+          console.log(table.rows[r].cells[0].children[0].value)
           exercise.Description = table.rows[r].cells[1].children[0].value;
           exercise.Sets = table.rows[r].cells[2].children[0].value;
           exercise.Repetitions = table.rows[r].cells[3].children[0].value;
           workout.exercises.push(exercise);
+          console.log(workout.exercises)
         }
-       console.log(workout);
-        $.post("add", workout
-        );
+     
+
+       $.ajax({
+						type: 'POST',
+						data: JSON.stringify(workout),
+				        contentType: 'application/json',
+                        url: 'http://localhost:3000/add',						
+                        success: function(data) {
+                            console.log('success');
+                            console.log(JSON.stringify(data));
+                        }
+       });
+      
 });
 });
 

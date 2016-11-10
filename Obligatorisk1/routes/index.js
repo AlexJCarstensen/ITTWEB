@@ -14,20 +14,20 @@ router.get('/', function(req, res, next) {
 MongoClient.connect(url, function(err, db) {
   assert.equal(null, err);
   console.log("Connected successfully to server");
+//console.log(collection)
 
 findDocuments(db, function(result){
   res.render('index', { title: 'Workouts', mytable:  result });
-   
-   db.close();
-});
-});
-
-});
+})
+ });
+//res.render('index', { title: 'Workouts' });
+ });
 
 /* Put new Workout in database */
 router.post('/add', function(req, res, next)
 {
-  console.log(req.body);
+  console.log("BODY");
+  console.log(req.jsonObject);
 console.log("POST");
 // Use connect method to connect to the server
 MongoClient.connect(url, function(err, db) {
@@ -62,7 +62,7 @@ var insertDocuments = function(db, callback, req){
 
 console.log("Posting to database");
 
-
+console.log(req.body.jsonObject)
           
 db.collection('Workouts').insertOne(req.body,  function(err, result)
 {
@@ -82,21 +82,17 @@ db.collection('Workouts').insertOne(req.body,  function(err, result)
 /*Read Function */
 var findDocuments = function(db, callback) {
 // Get the documents collection
-var collection = db.collection('Workouts').find( );
+var collection = db.collection('Workouts');
 // Find all documents
-collection.each(function(err, docs) {
+collection.find({}).toArray(function(err, docs) {
 assert.equal(err, null);
-if(docs != null)
-{
-  console.log("Found the following records");
-  console.dir(docs);
-}
-else
-{
-  callback(docs);
-}
+console.log("Found the following records");
+console.log(docs);
+callback(docs);
 });
 }
+
+
 
 var removeDocuments = function(db, callback) {
 // Get the documents collection
