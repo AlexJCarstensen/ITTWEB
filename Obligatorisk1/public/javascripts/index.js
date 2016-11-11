@@ -19,7 +19,7 @@ $(document).ready(function(){
      var rows = table.rows.length;
      
      var workout = new Object();
-     workout.name = document.getElementById("nameOfWorkout")
+     workout.name = document.getElementById("nameOfWorkout").value;
      workout.exercises = [];
         for (var r = 1; r < rows; r++) { 
          var exercise = new Object();

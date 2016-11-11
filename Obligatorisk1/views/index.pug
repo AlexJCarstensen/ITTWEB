@@ -7,44 +7,47 @@ block content
 
   ul#clickableList 
 
-  table#workoutTable
-    tr
+  each workout in mytable
+    p= workout.name  
+    table#workoutTable
+      tr
         th Exercise
         th Description
         th Sets
         th Repetitions
-    each workout in mytable
+      
       each exercise in workout.exercises
         tr
           td= exercise.name
           td= exercise.Description
           td= exercise.Sets
           td= exercise.Repetitions
-      
+        
   p Make your own exercise program
   
-    table#newWorkoutTable
-      tr
-        th Exercise
-        th Description
-        th Sets
-        th Repetitions
-      tr
-        td
-          input(type="text")
-        td
-          input(type="text")
-        td
-          input(type="text")
-        td
-          input(type="text")
-
-    button#addRow(onclick="addRow()") Add exercise
-
-  p Workout Name
   div
-    input#nameOfWorkout(type="text")
-    button#clickme(type="submit") Tilføj
+    p Workout Name
+    input#nameOfWorkout(type="text" placeholder="Name of Workout")
+  br  
+  table#newWorkoutTable
+    tr
+      th Exercise
+      th Description
+      th Sets
+      th Repetitions
+    tr
+      td
+        input(type="text" placeholder="Name of Exercise")
+      td
+        input(type="text" placeholder="What to do ?")
+      td
+        input(type="text" placeholder="How many sets?")
+      td
+        input(type="text" placeholder="How many repetitions?")
+  button#addRow(onclick="addRow()") Add exercise
+
+  button#clickme(type="submit") Add Workout
+
 
   
     
