@@ -1,0 +1,40 @@
+extends layout
+
+block content
+  #banner.page-header
+    .row
+      .col-lg-6
+        h1= title
+         
+  .row
+    .col-xs-12.col-sm-8
+      .error= message
+      .row.list-group        
+          .col-xs-12.list-group-item
+            h4 
+            table#workoutTable
+                tr
+                    th Exercise
+                    th Description                    
+                    th Repetitions
+                    th Sets
+                
+                each exercise in workout.exercises
+                    tr
+                    td= exercise.name
+                    td= exercise.description
+                    td= exercise.repetitions
+                    td= exercise.sets                    
+
+            form(method='POST' action=workout._id+'/exercises') 
+                tr
+                    td
+                        input(type="text" placeholder="Name of Exercise" name='name')
+                    td
+                        input(type="text" placeholder="What to do ?" name='description')
+                    td
+                        input(type="text" placeholder="How many repetitions?" name='repetitions')
+                    td
+                        input(type="text" placeholder="How many sets?" name='sets')
+
+                button#clickme(type="submit") Add exercise

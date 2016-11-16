@@ -38,3 +38,4 @@ process.once('SIGUSR2', function(){
 
 
 require('./workouts.model.js');
+require('./users.model.js');
