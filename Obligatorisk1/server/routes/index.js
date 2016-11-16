@@ -1,4 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-var ctrlLocations = require('../controllers/locations');
+var ctrlWorkouts = require('../controllers/workouts');
+
+//Workout pages
+
+router.get('/', ctrlWorkouts)

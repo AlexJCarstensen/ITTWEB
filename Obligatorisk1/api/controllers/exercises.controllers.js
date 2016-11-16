@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Workout = mongoose.model('Workout')
 
-
+//GET all exercises
 module.exports.exercisesGetAll = function (req, res) {
     var workoutId = req.params.workoutId;
     console.log('GET workoutId ', workoutId);
@@ -35,6 +35,7 @@ module.exports.exercisesGetAll = function (req, res) {
 
 };
 
+//POST exercise
 var addExercise = function (req, res, workout) {
     workout.exercises.push({
         name: req.body.name,
@@ -54,6 +55,7 @@ var addExercise = function (req, res, workout) {
     });
 };
 
+//POST exercise to specific workout
 module.exports.exercisesAddOne = function (req, res) {
     var workoutId = req.params.workoutId;
     console.log('POST workoutId ', workoutId);
@@ -89,6 +91,7 @@ module.exports.exercisesAddOne = function (req, res) {
         });
 };
 
+//GET specific exercise
 module.exports.exercisesGetOne = function (req, res) {
     var workoutId = req.params.workoutId;
     var exerciseId = req.params.exerciseId;
@@ -122,6 +125,8 @@ module.exports.exercisesGetOne = function (req, res) {
         });
 };
 
+
+//PUT Exercise
 module.exports.exercisesUpdateOne = function (req, res) {
     var workoutId = req.params.workoutId;
     var exerciseId = req.params.exerciseId;
@@ -182,6 +187,7 @@ module.exports.exercisesUpdateOne = function (req, res) {
         });
 };
 
+//DELETE exercise
 module.exports.exercisesDeleteOne = function (req, res) {
     var workoutId = req.params.workoutId;
     var exerciseId = req.params.exerciseId;
