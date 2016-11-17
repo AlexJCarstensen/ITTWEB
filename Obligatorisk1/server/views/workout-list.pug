@@ -17,7 +17,7 @@ block content
             h4 
               a(href="/workouts/"+workout._id)= workout.name
               small &nbsp;
-      form(method='POST' action='')
+      form(method='POST' action='/workouts')
         input(type="text" placeholder="Name of workout" name='name')
         button.btn.btn-default(type='submit')
             span.glyphicon.glyphicon-plus 

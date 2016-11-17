@@ -25,7 +25,7 @@ var _showError = function (req, res, status) {
 var renderHomepage = function (req, res, responseBody) {
     var message;
     if (!(responseBody instanceof Array)) {
-        message = "API lookup error";
+        message = "No workouts found";
         responseBody = [];
     } else {
         if (!responseBody.length) {
@@ -43,31 +43,60 @@ var renderHomepage = function (req, res, responseBody) {
 
 
 /* GET 'home' page */
-var renderLoginpage = function (req, res)
-{
+var renderLoginpage = function (req, res) {
     res.render('login');
 }
-module.exports.login = function(req, res){
+module.exports.login = function (req, res) {
     renderLoginpage(req, res);
 }
+module.exports.doLogin = function (req, res) {
+    var requestOptions, path, loginData;
+    loginData = {
+        email: req.body.email,
+        password: req.body.password
+    }
+    //Check is this path is correct
+    path = '/api/login';
+    requestOptions = {
+        url: apiOptions.server + path,
+        method: "POST",
+        json: loginData
+    };
+    request(
+        requestOptions,
+        function (err, response, body) {
+            var data;
+            data = body;
 
-var renderRegisterpage = function (req, res)
-{
+            if (response.statusCode === 200) {
+
+                getWorkouts(req, res);
+            } else {
+                _showError(req, res, response.statusCode);
+            }
+        }
+    );
+}
+var renderRegisterpage = function (req, res) {
     res.render('register');
 }
-module.exports.register = function(req, res){
+module.exports.register = function (req, res) {
     renderRegisterpage(req, res);
 }
 
-module.exports.doRegister = function(req, res){
-    var requestOptions, path;
-
+module.exports.doRegister = function (req, res) {
+    var requestOptions, path, signupData;
+    signupData = {
+        email: req.body.email,
+        name : req.body.name,
+        password: req.body.password
+    }
     //Check is this path is correct
     path = '/api/register';
     requestOptions = {
         url: apiOptions.server + path,
         method: "POST",
-        json: {}
+        json: signupData
     };
     request(
         requestOptions,
@@ -80,15 +109,18 @@ module.exports.doRegister = function(req, res){
     );
 }
 
-module.exports.homelist = function (req, res) {
-    var requestOptions, path;
+var getWorkouts = function (req, res) {
+    var requestOptions, path, user;
 
+    user = {
+        email: req.body.email
+    };
     //Check is this path is correct
     path = '/api/workouts';
     requestOptions = {
         url: apiOptions.server + path,
         method: "GET",
-        json: {}
+        json: user
     };
     request(
         requestOptions,
@@ -148,7 +180,8 @@ module.exports.addWorkout = function (req, res) {
     var requestOptions, path, workoutid, postdata;
     path = "/api/workouts/";
     postdata = {
-        name : req.body.name,        
+        name: req.body.name,
+
     };
     requestOptions = {
         url: apiOptions.server + path,
@@ -178,9 +211,9 @@ module.exports.addExercise = function (req, res) {
     workoutid = req.params.workoutid;
     path = "/api/workouts/" + workoutid + '/exercises';
     postdata = {
-        name : req.body.name,
-        description : req.body.name,
-        repetitions : parseInt(req.body.repetitions, 10),
+        name: req.body.name,
+        description: req.body.name,
+        repetitions: parseInt(req.body.repetitions, 10),
         sets: parseInt(req.body.sets, 10)
     };
     requestOptions = {

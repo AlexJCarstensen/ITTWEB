@@ -1,31 +1,42 @@
 var express = require('express');
 var router = express.Router();
+var jwt = require('express-jwt');
+var auth = jwt({
+secret: process.env.JWT_SECRET,
+userProperty: 'payload'
+});
 
 var workoutController = require('../controllers/workout.controllers.js');
 var exerciseController = require('../controllers/exercises.controllers.js');
+var authenticationController = require('../controllers/authentication.controllers.js');
+
 router
   .route('/workouts')
-  .get(workoutController.workoutsGetAll)
-  .post(workoutController.workoutsAddOne);
+  .get( workoutController.workoutsGetAll)
+  .post( workoutController.workoutsAddOne);
 
 router
   .route('/workouts/:workoutId')
-  .get(workoutController.workoutsGetOne)
-  .put(workoutController.workoutsUpdateOne)
-  .delete(workoutController.workoutsDeleteOne);
+  .get( workoutController.workoutsGetOne)
+  .put( workoutController.workoutsUpdateOne)
+  .delete( workoutController.workoutsDeleteOne);
 
 
 router
   .route('/workouts/:workoutId/exercises')
-  .get(exerciseController.exercisesGetAll)
-  .post(exerciseController.exercisesAddOne);
+  .get( exerciseController.exercisesGetAll)
+  .post( exerciseController.exercisesAddOne);
 
 router
   .route('/workouts/:workoutId/exercises/:exerciseId')
-  .get(exerciseController.exercisesGetOne)
-  .put(exerciseController.exercisesUpdateOne)
-  .delete(exerciseController.exercisesDeleteOne);
+  .get( exerciseController.exercisesGetOne)
+  .put( exerciseController.exercisesUpdateOne)
+  .delete( exerciseController.exercisesDeleteOne);
 
+
+router
+  .post('/register', authenticationController.register)
+  .post('/login', authenticationController.login);
 
 // /* GET home page. */
  router.get('/', function (req, res, next) {

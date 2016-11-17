@@ -1,29 +1,64 @@
 var mongoose = require('mongoose');
 var Workout = mongoose.model('Workout');
+var User = mongoose.model('User');
+
+
+var getAuthor = function (req, res, callback) {
+    console.log("Finding author with email " + req.payload.email);
+    if (req.payload.email) {
+        User
+            .findOne({ email: req.payload.email })
+            .exec(function (err, user) {
+                if (!user) {
+                    sendJSONresponse(res, 404, {
+                        "message": "User not found"
+                    });
+                    return;
+                } else if (err) {
+                    console.log(err);
+                    sendJSONresponse(res, 404, err);
+                    return;
+                }
+                console.log(user);
+                callback(req, res, user.email);
+            });
+
+    } else {
+        sendJSONresponse(res, 404, {
+            "message": "User not found"
+        });
+        return;
+    }
+
+};
+
 
 //GET Workouts
 module.exports.workoutsGetAll = function (req, res) {
     console.log("Get all workouts");
 
-    Workout
-        .find()
-        .exec(function (err, workouts) {
-            var response = {
-                status: 200,
-                message: workouts
-            };
-            if (err) {
-                console.log("Error finding workouts");
-                response.status = 500;
-                response.message = err;
-            }
+    // getAuthor(req, res, function (req, res, userEmail) {       
+            Workout
+                .find({user: req.body.email })
+                .exec(function (err, workouts) {
+                    var response = {
+                        status: 200,
+                        message: workouts
+                    };
+                    if (err) {
+                        console.log("Error finding workouts");
+                        response.status = 500;
+                        response.message = err;
+                    }
 
-            console.log("Found " + workouts.length + " workouts");
-            res
-                .status(response.status)
-                .json(response.message)
+                    console.log("Found " + workouts.length + " workouts");
+                    res
+                        .status(response.status)
+                        .json(response.message)
 
-        });
+                });
+        // })  
+
 };
 
 //GET specific Workout
