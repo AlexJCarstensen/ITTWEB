@@ -3,7 +3,7 @@ var apiOptions = {
     server: "http://localhost:3000"
 };
 
-var _showError = function (req, res, status) {
+var _showError = function (req, res, status, errMessage) {
     var title, content;
     if (status === 404) {
         title = "404, page not found";
@@ -13,7 +13,7 @@ var _showError = function (req, res, status) {
         content = "How embarrassing. There's a problem with our server.";
     } else {
         title = status + ", something's gone wrong";
-        content = "Something, somewhere, has gone just a little bit wrong.";
+        content = errMessage;
     }
     res.status(status);
     res.render('generic-text', {
@@ -24,18 +24,19 @@ var _showError = function (req, res, status) {
 
 var renderHomepage = function (req, res, responseBody) {
     var message;
-    if (!(responseBody instanceof Array)) {
+    if (!(responseBody.workouts instanceof Array)) {
         message = "No workouts found";
         responseBody = [];
     } else {
-        if (!responseBody.length) {
+        if (!responseBody.workouts.length) {
             message = "No workouts found";
         }
     }
     var renderObject = {
         title: 'Workouts',
-        workouts: responseBody,
-        message: message
+        workouts: responseBody.workouts,
+        message: message,
+        user : responseBody.user
     }
     res.render('workout-list', renderObject);
 };
@@ -72,7 +73,10 @@ module.exports.doLogin = function (req, res) {
 
                 getWorkouts(req, res);
             } else {
-                _showError(req, res, response.statusCode);
+               
+                var errMessage = body.message;
+               
+                _showError(req, res, response.statusCode, errMessage);
             }
         }
     );
@@ -104,18 +108,26 @@ module.exports.doRegister = function (req, res) {
             var data;
             data = body;
 
-            renderHomepage(req, res, data);
+            res.render('login');
         }
     );
 }
 
 var getWorkouts = function (req, res) {
-    var requestOptions, path, user;
+    var user;
 
     user = {
         email: req.body.email
     };
-    //Check is this path is correct
+
+    getWorkoutsFromApi(req, res, user);
+    
+};
+
+var getWorkoutsFromApi = function(req, res, user) {
+var requestOptions, path
+
+//Check is this path is correct
     path = '/api/workouts';
     requestOptions = {
         url: apiOptions.server + path,
@@ -126,11 +138,15 @@ var getWorkouts = function (req, res) {
         requestOptions,
         function (err, response, body) {
             var data;
-            data = body;
+            data = {
+                workouts : body,
+                user : user
+            };
 
             renderHomepage(req, res, data);
         }
     );
+
 };
 
 var getworkoutInfo = function (req, res, callback) {
@@ -148,7 +164,8 @@ var getworkoutInfo = function (req, res, callback) {
             if (response.statusCode === 200) {
                 callback(req, res, data);
             } else {
-                _showError(req, res, response.statusCode);
+                errMessage = "Coudn't fetch workout and exercises";
+                _showError(req, res, response.statusCode, errMessage);
             }
         }
     );
@@ -181,6 +198,7 @@ module.exports.addWorkout = function (req, res) {
     path = "/api/workouts/";
     postdata = {
         name: req.body.name,
+        userEmail: req.params.userEmail
 
     };
     requestOptions = {
@@ -189,18 +207,22 @@ module.exports.addWorkout = function (req, res) {
         json: postdata
     };
     if (!postdata.name) {
-        res.redirect('?err=val');
+        res.redirect('?/login/err=val');
     } else {
         request(
             requestOptions,
             function (err, response, body) {
                 if (response.statusCode === 201) {
-                    res.redirect('/');
+                    var user = {
+                         email: req.params.userEmail
+                            };
+                    getWorkoutsFromApi(req, res, user);
                 } else if (response.statusCode === 400 && body.name && body.name === "ValidationError") {
-                    res.redirect('/?err=val');
+                    res.redirect('/login/?err=val');
                 } else {
                     console.log(body);
-                    _showError(req, res, response.statusCode);
+                    var errMessage = "Failure in adding workout";
+                    _showError(req, res, response.statusCode, errMessage);
                 }
             }
         );
@@ -233,7 +255,8 @@ module.exports.addExercise = function (req, res) {
                     res.redirect('/workouts/' + workoutid + '/exercises?err=val');
                 } else {
                     console.log(body);
-                    _showError(req, res, response.statusCode);
+                    var errMessage = "Faliure in adding exercise";
+                    _showError(req, res, response.statusCode, errMessage);
                 }
             }
         );
