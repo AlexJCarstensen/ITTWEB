@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { Workout } from './classes/workout';
-import { WorkoutService } from './services/workout.service';
+import { Workout } from '../classes/workout';
+import { WorkoutService } from '../services/workout.service';
 
 
 @Component({
@@ -22,17 +22,17 @@ export class WorkoutComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private heroService: WorkoutService) { }
+        private WorkoutService: WorkoutService) { }
 
 
     onSelect(workout: Workout): void {
         this.selectedWorkout = workout;
     };
-    getHeroes(): void {
-        this.heroService.getHeroes().then(heroes => this.workouts = heroes);
+    getWorkouts(): void {
+        this.WorkoutService.getWorkouts().then(heroes => this.workouts = heroes);
     };
     ngOnInit(): void {
-        this.getHeroes();
+        //this.getWorkouts();
     };
 
     gotoDetail(): void {
@@ -42,14 +42,14 @@ export class WorkoutComponent implements OnInit {
     add(name: string): void {
         name = name.trim();
         if (!name) { return; }
-        this.heroService.create(name)
+        this.WorkoutService.create(name)
             .then(hero => {
             this.workouts.push(hero);
             this.selectedWorkout = null;
             });
     }
     delete(workout: Workout): void {
-        this.heroService
+        this.WorkoutService
             .delete(workout.id)
             .then(() => {
                 this.workouts = this.workouts.filter(h => h !== workout);
