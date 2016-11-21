@@ -7,14 +7,14 @@ import { WorkoutService } from '../services/workout.service';
 
 
 @Component({
-    moduleId: module.id,
+    
     selector: 'my-workouts',
     templateUrl: 'workouts.component.html',
     styleUrls: [`workouts.component.css`],
 
 })
 
-export class WorkoutComponent implements OnInit {
+export class WorkoutsComponent implements OnInit {
    
     title = 'Your workouts';
     selectedWorkout: Workout;
