@@ -9,17 +9,22 @@ app.set('port', (process.env.PORT || 3000));
 
 app.use(express.static(staticRoot));
 
-app.use(function(req, res, next){
+require('../src/api/models/db');
+require('../src/api/config/passport');
+
+var routesApi = require('../src/api/routes/index');
+app.use('/api', routesApi);
+app.use(function(req, res, next) {
 
     // if the request is not html then move along
     var accept = req.accepts('html', 'json', 'xml');
-    if(accept !== 'html'){
+    if (accept !== 'html') {
         return next();
     }
 
     // if the request has a '.' assume that it's for a file, move along
     var ext = path.extname(req.path);
-    if (ext !== ''){
+    if (ext !== '') {
         return next();
     }
 

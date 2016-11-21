@@ -29,7 +29,7 @@ export class WorkoutsComponent implements OnInit {
         this.selectedWorkout = workout;
     };
     getWorkouts(): void {
-        this.WorkoutService.getWorkouts().then(heroes => this.workouts = heroes);
+        this.WorkoutService.getWorkouts().then(workouts => this.workouts = workouts);
     };
     ngOnInit(): void {
         //this.getWorkouts();
@@ -43,8 +43,8 @@ export class WorkoutsComponent implements OnInit {
         name = name.trim();
         if (!name) { return; }
         this.WorkoutService.create(name)
-            .then(hero => {
-            this.workouts.push(hero);
+            .then(workout => {
+            this.workouts.push(workout);
             this.selectedWorkout = null;
             });
     }
