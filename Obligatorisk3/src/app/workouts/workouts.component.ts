@@ -8,9 +8,9 @@ import { WorkoutService } from './services/workout.service';
 
 @Component({
     moduleId: module.id,
-    selector: 'my-heroes',
-    templateUrl: 'heroes.component.html',
-    styleUrls: [`heroes.component.css`],
+    selector: 'my-workouts',
+    templateUrl: 'workouts.component.html',
+    styleUrls: [`workouts.component.css`],
 
 })
 
