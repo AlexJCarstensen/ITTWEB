@@ -1,3 +1,42 @@
-<p>
-  exercises works!
-</p>
+<div *ngIf="exercises">
+  <ul class="workouts">
+     <li *ngFor="let exercise of exercises">
+        <h2>{{exercise.name}} details!</h2>
+        <div>
+          <label>Description: </label>{{exercise.description}}</div>
+        <div>
+          <label>Sets: </label>{{exercise.sets}}</div>
+         <div>
+          <label>Repetitions: </label>{{exercise.repetitions}}</div>   
+        <div>
+          <label>name: </label>
+          <input [(ngModel)]="exercise.name" placeholder="name" />
+        </div>
+        <button (click)="save()">Save</button>
+     </li>
+  </ul>
+</div>
+<table class="tg">
+  <tr>
+    <th class="tg-2lp6">Exercise</th>
+    <th class="tg-2lp6">Description</th>
+    <th class="tg-2lp6">Sets</th>
+    <th class="tg-2lp6">Repetitions</th>
+  </tr>
+  <tr>
+    <td class="tg-mtwr">
+      <input [(ngModel)]="newExerciseName" placeholder="name" />
+    </td>
+    <td class="tg-mtwr">
+      <input [(ngModel)]="newExerciseDescription" placeholder="description" />
+    </td>
+    <td class="tg-mtwr">
+      <input [(ngModel)]="newExerciseSets" placeholder="sets" />
+    </td>
+    <td class="tg-mtwr">
+      <input [(ngModel)]="newExerciseRepetitions" placeholder="repetitions" />
+    </td>
+  </tr>
+</table>
+<label>Name: </label>{{newExerciseName}}
+<button (click)="newWorkout()">Add new exercise</button>

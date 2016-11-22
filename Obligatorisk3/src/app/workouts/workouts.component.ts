@@ -10,7 +10,7 @@ import { WorkoutService } from '../services/workout.service';
     
     selector: 'my-workouts',
     templateUrl: 'workouts.component.html',
-    styleUrls: [`workouts.component.css`],
+    styleUrls: ['workouts.component.css'],
 
 })
 
@@ -29,14 +29,14 @@ export class WorkoutsComponent implements OnInit {
         this.selectedWorkout = workout;
     };
     getWorkouts(): void {
-        this.WorkoutService.getWorkouts().then(heroes => this.workouts = heroes);
+        this.WorkoutService.getWorkouts().then(workouts => this.workouts = workouts);
     };
     ngOnInit(): void {
-        //this.getWorkouts();
+        this.getWorkouts();
     };
 
-    gotoDetail(): void {
-        this.router.navigate(['/detail', this.selectedWorkout.id]);
+    gotoExercises(): void {
+        this.router.navigate(['/exercises', this.selectedWorkout.id]);
     }
 
     add(name: string): void {

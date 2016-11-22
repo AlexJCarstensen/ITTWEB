@@ -1,8 +1,8 @@
 import { Exercise } from './exercise';
 
 export class Workout {
-    id: number;
+    _id: number;
     name: string;
     user: string;
-    exercises:[Exercise];
+    exercises: Exercise[];
 }
