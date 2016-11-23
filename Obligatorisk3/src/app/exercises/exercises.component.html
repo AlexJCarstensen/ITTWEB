@@ -13,6 +13,7 @@
           <input [(ngModel)]="exercise.name" placeholder="name" />
         </div>
         <button (click)="save()">Save</button>
+        <button (click)="delete(exercise)">Delete</button>
      </li>
   </ul>
 </div>
@@ -39,4 +40,4 @@
   </tr>
 </table>
 <label>Name: </label>{{newExerciseName}}
-<button (click)="newWorkout()">Add new exercise</button>
+<button (click)="AddNewExercise()">Add new exercise</button>

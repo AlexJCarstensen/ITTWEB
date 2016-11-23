@@ -1,5 +1,5 @@
 export class Exercise {
-    id: number;
+    _id: number;
     name: string;
     description: string;
     repetitions: number;

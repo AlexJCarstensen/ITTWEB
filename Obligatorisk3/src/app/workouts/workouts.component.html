@@ -19,6 +19,6 @@
     <h2>
         {{selectedWorkout.name | uppercase}} is a tough workout
     </h2>
-    <app-exercises *ngIf="selectedWorkout" [exercises]="selectedWorkout.exercises"></app-exercises>
+    <app-exercises *ngIf="selectedWorkout" [exercises]="selectedWorkout.exercises" [workoutId]="selectedWorkout._id"></app-exercises>
     <button (click)="gotoDetail()">View Details</button>
 </div>

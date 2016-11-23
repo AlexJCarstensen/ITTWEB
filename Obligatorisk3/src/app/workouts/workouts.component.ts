@@ -36,7 +36,7 @@ export class WorkoutsComponent implements OnInit {
     };
 
     gotoExercises(): void {
-        this.router.navigate(['/exercises', this.selectedWorkout.id]);
+        this.router.navigate(['/exercises', this.selectedWorkout._id]);
     }
 
     add(name: string): void {
@@ -50,7 +50,7 @@ export class WorkoutsComponent implements OnInit {
     }
     delete(workout: Workout): void {
         this.WorkoutService
-            .delete(workout.id)
+            .delete(workout._id)
             .then(() => {
                 this.workouts = this.workouts.filter(h => h !== workout);
                 if (this.selectedWorkout === workout) { this.selectedWorkout = null; }

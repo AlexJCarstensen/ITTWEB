@@ -28,11 +28,11 @@ export class WorkoutService {
   }
     getWorkout(id: number): Promise<Workout> {
         return this.getWorkouts()
-        .then(workouts => workouts.find(workout => workout.id === id));
+        .then(workouts => workouts.find(workout => workout._id === id));
     }
 
     update(workout: Workout): Promise<Workout> {
-        const url = `${this.workoutsUrl}/${workout.id}`;
+        const url = `${this.baseUrl}${this.workoutsUrl}/${workout._id}`;
         return this.http
         .put(url, JSON.stringify(workout), {headers: this.getHeaders()})
         .toPromise()
@@ -40,14 +40,15 @@ export class WorkoutService {
         .catch(this.handleError);
     }
     create(name: string): Promise<Workout> {
+
         return this.http
-            .post(this.workoutsUrl, JSON.stringify({name: name}), {headers: this.getHeaders()})
+            .post(this.baseUrl + this.workoutsUrl, JSON.stringify({name: name}), {headers: this.getHeaders()})
             .toPromise()
-            .then(res => res.json().data)
+            .then(res => res.json())
             .catch(this.handleError);
     }
     delete(id: number): Promise<void> {
-        const url = `${this.workoutsUrl}/${id}`;
+        const url = `${this.baseUrl}${this.workoutsUrl}/${id}`;
         return this.http.delete(url, {headers: this.getHeaders()})
             .toPromise()
             .then(() => null)
